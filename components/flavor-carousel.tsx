@@ -11,12 +11,12 @@ const products = [
   {
     id: 1,
     name: "Sensu",
-    tagline: "Tracker de emociones con IA",
-    description: "Monitorea y comprende tus emociones en tiempo real con inteligencia artificial avanzada.",
-    image: "/images/sensu-app.jpg",
+    tagline: "Tu diario emocional inteligente",
+    description: "Registra tus emociones, visualiza tus patrones y toma el control de tu día a día con estadísticas claras.",
+    image: "/images/sensu-mockup.png",
     bgColor: "from-[#00FF00]/20 via-[#00FF00]/10 to-transparent",
     accentColor: "#00FF00",
-    tags: ["IA emocional", "Monitoreo real-time", "Bienestar mental"],
+    tags: ["Inteligencia Emocional", "Monitoreo real-time", "Bienestar mental"],
     status: "available",
   },
   {
@@ -45,7 +45,7 @@ const slideVariants = {
     scale: 1,
     rotateY: 0,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 300,
       damping: 30,
     },
@@ -56,7 +56,7 @@ const slideVariants = {
     scale: 0.9,
     rotateY: direction > 0 ? -15 : 15,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 300,
       damping: 30,
     },
@@ -96,7 +96,7 @@ export function FlavorCarousel() {
   const prevProduct = () => paginate(-1)
 
   return (
-    <section id="productos" className="relative py-16 bg-white overflow-hidden">
+    <section id="productos" className="relative py-16 bg-[#121212] overflow-hidden">
       <motion.div
         className={`absolute inset-0 bg-gradient-to-br ${currentProduct.bgColor}`}
         initial={{ opacity: 0 }}
@@ -114,7 +114,7 @@ export function FlavorCarousel() {
           className="text-center mb-10"
         >
           <motion.span
-            className="font-mono text-[#121212]/60 text-xs tracking-widest"
+            className="font-mono text-white/60 text-xs tracking-widest"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -122,7 +122,7 @@ export function FlavorCarousel() {
           >
             NUESTROS PRODUCTOS
           </motion.span>
-          <h2 className="text-3xl md:text-5xl font-black text-[#121212] tracking-tighter mt-2 overflow-hidden">
+          <h2 className="text-3xl md:text-5xl font-black text-white tracking-tighter mt-2 overflow-hidden">
             <motion.span
               className="inline-block"
               initial={{ y: 80 }}
@@ -150,7 +150,7 @@ export function FlavorCarousel() {
           <div className="flex items-center justify-center gap-6">
             <motion.button
               onClick={prevProduct}
-              className="hidden md:flex w-12 h-12 rounded-full border-2 border-[#121212] items-center justify-center hover:bg-[#121212] hover:text-white transition-colors"
+              className="hidden md:flex w-12 h-12 rounded-full border-2 border-white/20 items-center justify-center text-white hover:bg-white hover:text-black transition-colors"
               whileHover={{ scale: 1.1, rotate: -5 }}
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -205,7 +205,7 @@ export function FlavorCarousel() {
                             </span>
                           )}
                         </div>
-                        
+
                         <motion.span
                           className="font-mono text-xs tracking-widest"
                           style={{ color: currentProduct.accentColor }}
@@ -291,7 +291,7 @@ export function FlavorCarousel() {
 
             <motion.button
               onClick={nextProduct}
-              className="hidden md:flex w-12 h-12 rounded-full border-2 border-[#121212] items-center justify-center hover:bg-[#121212] hover:text-white transition-colors"
+              className="hidden md:flex w-12 h-12 rounded-full border-2 border-white/20 items-center justify-center text-white hover:bg-white hover:text-black transition-colors"
               whileHover={{ scale: 1.1, rotate: 5 }}
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -303,14 +303,14 @@ export function FlavorCarousel() {
           <div className="flex md:hidden justify-center gap-4 mt-6">
             <motion.button
               onClick={prevProduct}
-              className="w-10 h-10 rounded-full border-2 border-[#121212] flex items-center justify-center"
+              className="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-white"
               whileTap={{ scale: 0.9 }}
             >
               <ChevronLeft className="w-4 h-4" />
             </motion.button>
             <motion.button
               onClick={nextProduct}
-              className="w-10 h-10 rounded-full border-2 border-[#121212] flex items-center justify-center"
+              className="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-white"
               whileTap={{ scale: 0.9 }}
             >
               <ChevronRight className="w-4 h-4" />
@@ -328,7 +328,7 @@ export function FlavorCarousel() {
                 }}
                 className="h-2 rounded-full transition-all"
                 style={{
-                  backgroundColor: index === currentIndex ? product.accentColor : "#12121220",
+                  backgroundColor: index === currentIndex ? product.accentColor : "rgba(255,255,255,0.2)",
                 }}
                 animate={{
                   width: index === currentIndex ? 28 : 10,
