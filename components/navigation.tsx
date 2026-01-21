@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import { useLenis } from "lenis/react"
 import { Menu, X } from "lucide-react"
+import Image from "next/image"
 
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false)
@@ -22,16 +23,16 @@ export function Navigation() {
   const scrollToSection = (id: string) => {
     const element = document.querySelector(id)
     if (element && lenis) {
-      lenis.scrollTo(element, { offset: -100 })
+      lenis.scrollTo(element as HTMLElement, { offset: -100 })
     }
     setMobileMenuOpen(false)
   }
 
   const navLinks = [
     { label: "Inicio", href: "#hero" },
-    { label: "Productos", href: "#productos" },
-    { label: "Tecnología", href: "#tecnologia" },
-    { label: "Nosotros", href: "#nosotros" },
+    { label: "Productos", href: "#products" },
+    { label: "Servicios", href: "#services" },
+    { label: "Contacto", href: "#contact" },
   ]
 
   return (
@@ -39,30 +40,19 @@ export function Navigation() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-[#121212]/95 backdrop-blur-md border-b border-white/10" : "bg-transparent"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "bg-[#121212]/95 backdrop-blur-md border-b border-white/10" : "bg-transparent"
+        }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <motion.span
-            className="text-2xl font-black tracking-tighter"
+          <motion.div
+            className="flex items-center text-2xl font-black tracking-tighter"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
-            <span className={scrolled ? "text-white" : "text-[#121212]"}>DevDiaz</span>
-            <motion.span
-              className="text-[#00FF00]"
-              animate={{
-                textShadow: scrolled
-                  ? ["0 0 10px rgba(0,255,0,0.5)", "0 0 20px rgba(0,255,0,0.8)", "0 0 10px rgba(0,255,0,0.5)"]
-                  : "none",
-              }}
-              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-            >
-              Labs
-            </motion.span>
-          </motion.span>
+            <span className={scrolled ? "text-white" : "text-black"}>DevDiaz</span>
+            <span className="text-[#00FF00] ml-1">Labs</span>
+          </motion.div>
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
@@ -70,9 +60,8 @@ export function Navigation() {
             <motion.button
               key={item.label}
               onClick={() => scrollToSection(item.href)}
-              className={`text-sm font-medium tracking-wide transition-colors relative ${
-                scrolled ? "text-white/80 hover:text-[#00FF00]" : "text-[#121212]/80 hover:text-[#121212]"
-              }`}
+              className={`text-sm font-medium tracking-wide transition-colors relative ${scrolled ? "text-white hover:text-[#00FF00]" : "text-black hover:text-[#00FF00]"
+                }`}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1, duration: 0.4, ease: [0.25, 0.4, 0.25, 1] }}
@@ -129,7 +118,7 @@ export function Navigation() {
                 exit={{ rotate: 90, opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <X className={scrolled ? "text-white" : "text-[#121212]"} />
+                <X className={scrolled ? "text-white" : "text-black"} />
               </motion.div>
             ) : (
               <motion.div
@@ -139,7 +128,7 @@ export function Navigation() {
                 exit={{ rotate: -90, opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <Menu className={scrolled ? "text-white" : "text-[#121212]"} />
+                <Menu className={scrolled ? "text-white" : "text-black"} />
               </motion.div>
             )}
           </AnimatePresence>

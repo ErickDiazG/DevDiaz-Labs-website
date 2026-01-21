@@ -14,7 +14,7 @@ const fadeUpVariants = {
     transition: {
       delay: i * 0.1,
       duration: 0.8,
-      ease: [0.25, 0.4, 0.25, 1],
+      ease: [0.25, 0.4, 0.25, 1] as const,
     },
   }),
 }
@@ -26,7 +26,7 @@ const scaleInVariants = {
     scale: 1,
     rotate: 0,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 100,
       damping: 20,
       delay: 0.3,
@@ -106,7 +106,7 @@ export function HeroSection() {
             <div className="space-y-1 overflow-hidden">
               <motion.h1
                 style={{ x: textX1 }}
-                className="text-5xl md:text-7xl font-black tracking-tighter text-[#121212] leading-[0.9]"
+                className="text-5xl md:text-7xl font-black tracking-tighter text-black leading-[0.9]"
               >
                 <motion.span
                   variants={fadeUpVariants}
@@ -120,7 +120,7 @@ export function HeroSection() {
               </motion.h1>
               <motion.h1
                 style={{ x: textX2 }}
-                className="text-5xl md:text-7xl font-black tracking-tighter text-[#121212] leading-[0.9]"
+                className="text-5xl md:text-7xl font-black tracking-tighter text-black leading-[0.9]"
               >
                 <motion.span
                   variants={fadeUpVariants}
@@ -137,7 +137,7 @@ export function HeroSection() {
                 initial="hidden"
                 animate="visible"
                 custom={3}
-                className="text-lg md:text-xl font-mono text-[#121212]/60 tracking-tight pt-2 max-w-md"
+                className="text-lg md:text-xl font-mono text-black/80 tracking-tight pt-2 max-w-md"
               >
                 Desarrollo de apps que transforman tu día a día.
               </motion.p>
@@ -150,33 +150,35 @@ export function HeroSection() {
               custom={4}
               className="flex flex-wrap gap-3 pt-2"
             >
-              <motion.button
-                className="bg-[#00FF00] text-[#121212] px-6 py-3 rounded-full font-bold text-sm tracking-wide flex items-center gap-2 group relative overflow-hidden"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full"
-                  whileHover={{ x: "200%" }}
-                  transition={{ duration: 0.6 }}
-                />
-                <span className="relative z-10">Regístrate y mantente al tanto</span>
-                <motion.svg
-                  className="w-4 h-4 relative z-10"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  initial={{ x: 0 }}
-                  whileHover={{ x: 4 }}
+              <a href="#services">
+                <motion.button
+                  className="bg-[#00FF00] text-[#121212] px-6 py-3 rounded-full font-bold text-sm tracking-wide flex items-center gap-2 group relative overflow-hidden"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </motion.svg>
-              </motion.button>
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full"
+                    whileHover={{ x: "200%" }}
+                    transition={{ duration: 0.6 }}
+                  />
+                  <span className="relative z-10">Ver Servicios</span>
+                  <motion.svg
+                    className="w-4 h-4 relative z-10"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    initial={{ x: 0 }}
+                    whileHover={{ x: 4 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </motion.svg>
+                </motion.button>
+              </a>
               <motion.button
-                className="border-2 border-[#121212] text-[#121212] px-6 py-3 rounded-full font-bold text-sm tracking-wide relative overflow-hidden"
-                whileHover={{ scale: 1.02, backgroundColor: "#121212", color: "#fff" }}
+                className="border-2 border-[#121212] text-[#121212] px-6 py-3 rounded-full font-bold text-sm tracking-wide relative overflow-hidden hover:bg-[#121212] hover:text-white transition-colors"
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
@@ -191,7 +193,12 @@ export function HeroSection() {
               custom={5}
               className="flex flex-wrap gap-4 pt-2"
             >
-              {["React", "Python", "IA", "Mobile Dev"].map((benefit, i) => (
+              {[
+                "Diseño Intuitivo",
+                "Seguridad Total",
+                "Innovación Constante",
+                "Soporte Directo"
+              ].map((benefit, i) => (
                 <motion.div
                   key={benefit}
                   className="flex items-center gap-2 text-xs font-mono text-[#121212]/60"
@@ -199,7 +206,7 @@ export function HeroSection() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.8 + i * 0.1 }}
                 >
-                  <div className="w-1.5 h-1.5 bg-[#00FF00] rounded-full" />
+                  <div className="w-1.5 h-1.5 bg-[#00FF00] rounded-full animate-pulse" />
                   {benefit}
                 </motion.div>
               ))}
@@ -229,14 +236,15 @@ export function HeroSection() {
                 }}
                 className="relative"
               >
-                {/* Glassmorphism container */}
-                <div className="relative w-[300px] h-[450px] md:w-[350px] md:h-[525px]">
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-xl rounded-[3rem] border border-white/30 shadow-2xl" />
+                {/* Floating Image Container */}
+                <div className="relative w-full max-w-[600px] h-auto aspect-[4/3] md:aspect-auto">
+                  {/* Removed background glass container to let the composition shine */}
                   <Image
-                    src="/images/app-mockup-hero.jpg"
-                    alt="DevDiaz Labs - App Mockup"
-                    fill
-                    className="relative z-10 object-cover rounded-[2.5rem] p-2"
+                    src="/images/hero-composition-samsung.png"
+                    alt="DevDiaz Labs - Digital Ecosystem"
+                    width={800}
+                    height={600}
+                    className="relative z-10 object-contain drop-shadow-2xl"
                     priority
                   />
                 </div>

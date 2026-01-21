@@ -51,7 +51,7 @@ export function ActivationsSection() {
   const isInView = useInView(ref, { once: true, margin: "-50px" })
 
   return (
-    <section id="servicios" className="relative py-24 bg-[#0a0a0a] overflow-hidden">
+    <section id="services" className="relative py-24 bg-[#0a0a0a] overflow-hidden">
       {/* Background ambient light */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-5xl bg-[#00FF00]/5 blur-[120px] rounded-full pointer-events-none" />
 
@@ -85,7 +85,23 @@ export function ActivationsSection() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {services.map((service) => (
+          {[
+            {
+              icon: Smartphone,
+              title: "Apps Android",
+              description: "Desarrollo nativo y publicación en Play Store.",
+            },
+            {
+              icon: Monitor,
+              title: "Web & Landing Pages",
+              description: "Sitios modernos de alta conversión.",
+            },
+            {
+              icon: Ticket,
+              title: "Invitaciones Digitales",
+              description: "Invitaciones interactivas con mapas y RSVP.",
+            },
+          ].map((service) => (
             <motion.div
               key={service.title}
               variants={itemVariants}

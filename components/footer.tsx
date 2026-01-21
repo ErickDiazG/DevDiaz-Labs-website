@@ -53,7 +53,7 @@ export function Footer() {
   ]
 
   return (
-    <footer ref={footerRef} className="relative bg-[#121212] pt-24 pb-6 overflow-hidden">
+    <footer id="contact" ref={footerRef} className="relative bg-[#121212] pt-24 pb-6 overflow-hidden">
       {/* Background Gradient */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-4xl bg-[#00FF00]/10 blur-[100px] rounded-full pointer-events-none" />
 

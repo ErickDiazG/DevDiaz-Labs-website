@@ -96,7 +96,7 @@ export function FlavorCarousel() {
   const prevProduct = () => paginate(-1)
 
   return (
-    <section id="productos" className="relative py-16 bg-[#121212] overflow-hidden">
+    <section id="products" className="relative py-16 bg-[#121212] overflow-hidden">
       <motion.div
         className={`absolute inset-0 bg-gradient-to-br ${currentProduct.bgColor}`}
         initial={{ opacity: 0 }}
@@ -114,7 +114,7 @@ export function FlavorCarousel() {
           className="text-center mb-10"
         >
           <motion.span
-            className="font-mono text-white/60 text-xs tracking-widest"
+            className="font-mono text-[#00FF00] text-sm md:text-base tracking-[0.2em] font-bold"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
