@@ -60,28 +60,22 @@ export function HeroSection() {
     <section
       id="hero"
       ref={ref}
-      className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-white noise-overlay"
+      className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-white"
     >
-      {/* Subtle gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white via-[#00FF00]/5 to-white" />
+      {/* Technical Grid Background */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
+      {/* Subtle ambient gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white via-transparent to-white/80 pointer-events-none" />
+
+      {/* Neon Glow Bloom (Top Left) */}
       <motion.div
-        className="absolute top-20 left-10 w-24 h-24 rounded-full bg-[#00FF00]/20 blur-3xl"
+        className="absolute top-20 left-10 w-64 h-64 rounded-full bg-[#00FF00]/10 blur-[100px]"
         animate={{
-          x: [0, 30, 0],
-          y: [0, -20, 0],
-          scale: [1, 1.1, 1],
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
         }}
         transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-40 right-20 w-32 h-32 rounded-full bg-[#00FF00]/10 blur-3xl"
-        animate={{
-          x: [0, -40, 0],
-          y: [0, 30, 0],
-          scale: [1, 1.2, 1],
-        }}
-        transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-12">
@@ -213,13 +207,16 @@ export function HeroSection() {
             </motion.div>
           </motion.div>
 
+          {/* Right Side - Visuals */}
           <motion.div style={{ y, scale }} className="relative flex justify-center">
             <motion.div variants={scaleInVariants} initial="hidden" animate="visible" className="relative">
+
+              {/* BACK GLOW - Enhances depth */}
               <motion.div
-                className="absolute inset-0 bg-[#00FF00]/30 blur-[80px] rounded-full scale-75"
+                className="absolute inset-0 bg-[#00FF00]/40 blur-[120px] rounded-full scale-90"
                 animate={{
-                  scale: [0.75, 0.85, 0.75],
-                  opacity: [0.3, 0.5, 0.3],
+                  scale: [0.9, 1.1, 0.9],
+                  opacity: [0.4, 0.6, 0.4],
                 }}
                 transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
               />
@@ -236,15 +233,15 @@ export function HeroSection() {
                 }}
                 className="relative"
               >
-                {/* Floating Image Container */}
-                <div className="relative w-full max-w-[600px] h-auto aspect-[4/3] md:aspect-auto">
-                  {/* Removed background glass container to let the composition shine */}
+                {/* Floating Image Container with CSS Blend Mode */}
+                <div className="relative w-full max-w-[650px] h-auto aspect-[4/3] md:aspect-auto">
+                  {/* MIX-BLEND-MODE: MULTIPLY removes the white background visually */}
                   <Image
                     src="/images/hero-composition-samsung.png"
                     alt="DevDiaz Labs - Digital Ecosystem"
                     width={800}
                     height={600}
-                    className="relative z-10 object-contain drop-shadow-2xl"
+                    className="relative z-10 object-contain drop-shadow-2xl mix-blend-multiply"
                     priority
                   />
                 </div>

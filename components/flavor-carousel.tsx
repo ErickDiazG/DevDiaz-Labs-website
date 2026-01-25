@@ -65,7 +65,7 @@ const slideVariants = {
 
 export function FlavorCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [[page, direction], setPage] = useState([0, 0])
+  const [direction, setDirection] = useState(0)
   const currentProduct = products[currentIndex]
 
   const rotateX = useSpring(0, { stiffness: 150, damping: 20 })
@@ -89,7 +89,7 @@ export function FlavorCarousel() {
   const paginate = (newDirection: number) => {
     const newIndex = (currentIndex + newDirection + products.length) % products.length
     setCurrentIndex(newIndex)
-    setPage([page + newDirection, newDirection])
+    setDirection(newDirection)
   }
 
   const nextProduct = () => paginate(1)
@@ -324,7 +324,7 @@ export function FlavorCarousel() {
                 onClick={() => {
                   const newDirection = index > currentIndex ? 1 : -1
                   setCurrentIndex(index)
-                  setPage([index, newDirection])
+                  setDirection(newDirection)
                 }}
                 className="h-2 rounded-full transition-all"
                 style={{

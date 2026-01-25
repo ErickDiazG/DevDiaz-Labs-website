@@ -6,12 +6,12 @@ import { LenisProvider } from "@/components/lenis-provider"
 import ClickSpark from "@/components/click-spark"
 import "./globals.css"
 
-const _inter = Inter({
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
 })
 
-const _jetbrainsMono = JetBrains_Mono({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
 })
@@ -33,8 +33,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`font-sans antialiased`}>
+    <html lang="es" className="scroll-smooth">
+      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
         <ClickSpark
           sparkColor="#00FF00"
           sparkSize={12}
@@ -50,3 +50,4 @@ export default function RootLayout({
     </html>
   )
 }
+

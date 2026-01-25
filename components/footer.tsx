@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion"
 import { useState, useRef } from "react"
 import Link from "next/link"
 
+// Animation variants for staggered reveal
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -28,29 +29,33 @@ const itemVariants = {
   },
 }
 
+// Footer navigation links - moved outside component to avoid recreation
+const FOOTER_LINKS = [
+  {
+    title: "Productos",
+    links: ["Sensu", "Gritia", "Próximamente"],
+  },
+  {
+    title: "Enlaces",
+    links: ["Inicio", "Productos", "Tecnología", "Nosotros"],
+  },
+  {
+    title: "Empresa",
+    links: ["Sobre Nosotros", "Carreras", "Blog"],
+  },
+  {
+    title: "Legal",
+    links: ["Privacidad", "Términos", "Cookies"],
+  },
+] as const
+
+// TODO: Replace with real WhatsApp number before production deployment
+const WHATSAPP_LINK = "https://wa.me/1234567890"
+
 export function Footer() {
   const [isHovering, setIsHovering] = useState(false)
   const footerRef = useRef(null)
   const isInView = useInView(footerRef, { once: true, margin: "-100px" })
-
-  const footerLinks = [
-    {
-      title: "Productos",
-      links: ["Sensu", "Gritia", "Próximamente"],
-    },
-    {
-      title: "Enlaces",
-      links: ["Inicio", "Productos", "Tecnología", "Nosotros"],
-    },
-    {
-      title: "Empresa",
-      links: ["Sobre Nosotros", "Carreras", "Blog"],
-    },
-    {
-      title: "Legal",
-      links: ["Privacidad", "Términos", "Cookies"],
-    },
-  ]
 
   return (
     <footer id="contact" ref={footerRef} className="relative bg-[#121212] pt-24 pb-6 overflow-hidden">
@@ -103,7 +108,7 @@ export function Footer() {
             transition={{ delay: 0.3 }}
           >
             <Link
-              href="https://wa.me/1234567890"
+              href={WHATSAPP_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 bg-[#00FF00] text-black font-bold px-8 py-4 rounded-full hover:shadow-[0_0_30px_rgba(0,255,0,0.4)] transition-all duration-300 md:text-lg group"
@@ -134,7 +139,7 @@ export function Footer() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {footerLinks.map((section) => (
+          {FOOTER_LINKS.map((section) => (
             <motion.div key={section.title} variants={itemVariants}>
               <h4 className="font-bold text-white text-sm mb-3">{section.title}</h4>
               <ul className="space-y-2">

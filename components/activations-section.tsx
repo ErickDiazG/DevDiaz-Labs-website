@@ -4,24 +4,6 @@ import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
 import { Smartphone, Monitor, Ticket } from "lucide-react"
 
-const services = [
-  {
-    icon: Smartphone,
-    title: "Desarrollo de Apps Móviles",
-    description: "Transformamos tu idea en una app funcional y potente. Especialistas en desarrollo nativo para el ecosistema Android.",
-  },
-  {
-    icon: Monitor,
-    title: "Sitios Web & Landing Pages",
-    description: "Dale presencia digital a tu negocio. Creamos páginas web rápidas, modernas y adaptables para que tus clientes te encuentren fácil.",
-  },
-  {
-    icon: Ticket,
-    title: "Invitaciones Digitales Interactivas",
-    description: "Lleva tu evento al siguiente nivel. Invitaciones web interactivas con mapas, confirmación de asistencia y galerías para tus eventos.",
-  },
-]
-
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
