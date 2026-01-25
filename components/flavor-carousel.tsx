@@ -150,7 +150,7 @@ export function FlavorCarousel() {
           <div className="flex items-center justify-center gap-6">
             <motion.button
               onClick={prevProduct}
-              className="hidden md:flex w-12 h-12 rounded-full border-2 border-white/20 items-center justify-center text-white hover:bg-white hover:text-black transition-colors"
+              className="hidden md:flex w-12 h-12 rounded-full border-2 border-white/20 items-center justify-center text-white hover:bg-white hover:text-black transition-colors cursor-pointer"
               whileHover={{ scale: 1.1, rotate: -5 }}
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -252,7 +252,7 @@ export function FlavorCarousel() {
 
                       {currentProduct.status === "available" ? (
                         <motion.button
-                          className="px-6 py-3 rounded-full font-bold text-sm tracking-wide w-full md:w-auto relative overflow-hidden"
+                          className="px-6 py-3 rounded-full font-bold text-sm tracking-wide w-full md:w-auto relative overflow-hidden cursor-pointer"
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                           transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -291,7 +291,7 @@ export function FlavorCarousel() {
 
             <motion.button
               onClick={nextProduct}
-              className="hidden md:flex w-12 h-12 rounded-full border-2 border-white/20 items-center justify-center text-white hover:bg-white hover:text-black transition-colors"
+              className="hidden md:flex w-12 h-12 rounded-full border-2 border-white/20 items-center justify-center text-white hover:bg-white hover:text-black transition-colors cursor-pointer"
               whileHover={{ scale: 1.1, rotate: 5 }}
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -303,14 +303,14 @@ export function FlavorCarousel() {
           <div className="flex md:hidden justify-center gap-4 mt-6">
             <motion.button
               onClick={prevProduct}
-              className="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-white"
+              className="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-white cursor-pointer"
               whileTap={{ scale: 0.9 }}
             >
               <ChevronLeft className="w-4 h-4" />
             </motion.button>
             <motion.button
               onClick={nextProduct}
-              className="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-white"
+              className="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-white cursor-pointer"
               whileTap={{ scale: 0.9 }}
             >
               <ChevronRight className="w-4 h-4" />
@@ -326,7 +326,7 @@ export function FlavorCarousel() {
                   setCurrentIndex(index)
                   setDirection(newDirection)
                 }}
-                className="h-2 rounded-full transition-all"
+                className="h-2 rounded-full transition-all cursor-pointer"
                 style={{
                   backgroundColor: index === currentIndex ? product.accentColor : "rgba(255,255,255,0.2)",
                 }}

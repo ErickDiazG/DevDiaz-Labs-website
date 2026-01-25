@@ -59,7 +59,7 @@ export function Navigation() {
             <motion.button
               key={item.label}
               onClick={() => scrollToSection(item.href)}
-              className={`text-sm font-medium tracking-wide transition-colors relative ${scrolled ? "text-white hover:text-[#00FF00]" : "text-black hover:text-[#00FF00]"
+              className={`text-sm font-medium tracking-wide transition-colors relative cursor-pointer ${scrolled ? "text-white hover:text-[#00FF00]" : "text-black hover:text-[#00FF00]"
                 }`}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -79,7 +79,9 @@ export function Navigation() {
         </div>
 
         <motion.button
-          className="hidden md:block bg-[#00FF00] text-[#121212] px-6 py-2.5 rounded-full font-bold text-sm tracking-wide relative overflow-hidden"
+          onClick={() => scrollToSection("#contacto-final")}
+          aria-label="Ir a la sección de contacto"
+          className="hidden md:block bg-[#00FF00] text-[#121212] px-6 py-2.5 rounded-full font-bold text-sm tracking-wide relative overflow-hidden cursor-pointer"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -104,7 +106,7 @@ export function Navigation() {
         </motion.button>
 
         <motion.button
-          className="md:hidden p-2"
+          className="md:hidden p-2 cursor-pointer"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           whileTap={{ scale: 0.9 }}
         >
@@ -148,7 +150,7 @@ export function Navigation() {
                 <motion.button
                   key={item.label}
                   onClick={() => scrollToSection(item.href)}
-                  className="block w-full text-left text-white/80 hover:text-[#00FF00] text-lg font-medium py-2"
+                  className="block w-full text-left text-white/80 hover:text-[#00FF00] text-lg font-medium py-2 cursor-pointer"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
@@ -157,7 +159,9 @@ export function Navigation() {
                 </motion.button>
               ))}
               <motion.button
-                className="w-full bg-[#00FF00] text-[#121212] px-6 py-3 rounded-full font-bold text-sm tracking-wide mt-4"
+                onClick={() => scrollToSection("#contacto-final")}
+                aria-label="Ir a la sección de contacto"
+                className="w-full bg-[#00FF00] text-[#121212] px-6 py-3 rounded-full font-bold text-sm tracking-wide mt-4 cursor-pointer"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}

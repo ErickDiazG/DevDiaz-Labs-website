@@ -87,7 +87,7 @@ export function ActivationsSection() {
             <motion.div
               key={service.title}
               variants={itemVariants}
-              className="group relative bg-zinc-900/40 backdrop-blur-sm border border-white/5 rounded-3xl p-8 min-h-[320px] flex flex-col transition-all duration-300 hover:-translate-y-2 hover:border-[#00FF00]/50 hover:shadow-[0_0_30px_rgba(0,255,0,0.15)]"
+              className="group relative bg-zinc-900/40 backdrop-blur-sm border border-white/5 rounded-3xl p-8 min-h-[320px] flex flex-col transition-all duration-300 hover:-translate-y-2 hover:border-[#00FF00]/50 hover:shadow-[0_0_30px_rgba(0,255,0,0.15)] cursor-pointer"
             >
               {/* Neon Glow element on hover */}
               <div className="absolute inset-0 rounded-3xl bg-[#00FF00]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
