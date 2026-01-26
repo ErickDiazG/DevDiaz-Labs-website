@@ -134,14 +134,15 @@ export function HeroSection() {
               </motion.button>
             </a>
 
-            <motion.button
-              className={BUTTON_SECONDARY}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              aria-label="Explorar nuestros productos"
-            >
-              Explora Nuestros Productos
-            </motion.button>
+            <a href="#products" aria-label="Explorar nuestros productos">
+              <motion.button
+                className={`${BUTTON_SECONDARY} focus-visible:ring-2 focus-visible:ring-[#00FF00] focus-visible:ring-offset-2`}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                Explora Nuestros Productos
+              </motion.button>
+            </a>
           </motion.div>
 
           {/* Benefits List */}
