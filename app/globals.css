@@ -205,3 +205,68 @@
   pointer-events: none;
   animation: grain 8s steps(10) infinite;
 }
+
+/* ===== AURORA ANIMATIONS - Premium Tech Background ===== */
+/* Ultra-slow animations for imperceptible "breathing" effect */
+/* GPU-accelerated: uses only transform and opacity */
+
+@keyframes aurora {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+    opacity: 0.6;
+  }
+  25% {
+    transform: scale(1.05) translateY(-2%);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.1) translateY(-5%);
+    opacity: 0.8;
+  }
+  75% {
+    transform: scale(1.03) translateY(-2%);
+    opacity: 0.65;
+  }
+}
+
+@keyframes aurora-secondary {
+  0%, 100% {
+    transform: scale(1) translateX(0);
+    opacity: 0.4;
+  }
+  33% {
+    transform: scale(1.08) translateX(3%);
+    opacity: 0.5;
+  }
+  66% {
+    transform: scale(1.02) translateX(-2%);
+    opacity: 0.45;
+  }
+}
+
+@keyframes aurora-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    filter: blur(80px);
+  }
+  50% {
+    opacity: 0.5;
+    filter: blur(100px);
+  }
+}
+
+.animate-aurora {
+  animation: aurora 25s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.animate-aurora-secondary {
+  animation: aurora-secondary 30s ease-in-out infinite;
+  animation-delay: -10s;
+  will-change: transform, opacity;
+}
+
+.animate-aurora-pulse {
+  animation: aurora-pulse 20s ease-in-out infinite;
+  will-change: opacity, filter;
+}

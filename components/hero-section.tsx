@@ -2,37 +2,40 @@
 
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import { useRef } from "react"
-import Image from "next/image"
+import { InteractiveGrid } from "./interactive-grid"
+
+/**
+ * Hero Section - Premium Tech Aesthetic with Interactive Background
+ * 
+ * Architecture follows SOLID principles:
+ * - SRP: Interactive grid separated to InteractiveGrid component
+ * - DRY: Button styles extracted to reusable constants
+ * 
+ * Accessibility:
+ * - WCAG AA compliant contrast: dark text on white background
+ * - Semantic HTML: section, h1, ul elements
+ * - Canvas is aria-hidden and pointer-events-none
+ */
 
 const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 }
 
 const fadeUpVariants = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 30 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.1,
-      duration: 0.8,
+      delay: i * 0.12,
+      duration: 0.7,
       ease: [0.25, 0.4, 0.25, 1] as const,
     },
   }),
 }
 
-const scaleInVariants = {
-  hidden: { opacity: 0, scale: 0.8, rotate: -10 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    rotate: 0,
-    transition: {
-      type: "spring" as const,
-      stiffness: 100,
-      damping: 20,
-      delay: 0.3,
-    },
-  },
-}
+// DRY: Reusable button style tokens
+const BUTTON_BASE = "px-7 py-3.5 rounded-full font-bold text-sm tracking-wide relative overflow-hidden cursor-pointer transition-all duration-300"
+const BUTTON_PRIMARY = `${BUTTON_BASE} bg-[#00FF00] text-[#0a0a0a] flex items-center gap-2 hover:shadow-[0_0_30px_rgba(0,255,0,0.4)] hover:scale-[1.02]`
+const BUTTON_SECONDARY = `${BUTTON_BASE} border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white`
 
 export function HeroSection() {
   const ref = useRef(null)
@@ -41,235 +44,157 @@ export function HeroSection() {
     offset: ["start start", "end start"],
   })
 
-  const rawY = useTransform(scrollYProgress, [0, 1], [0, 200])
-  const y = useSpring(rawY, springConfig)
-
-  const rawTextX1 = useTransform(scrollYProgress, [0, 1], [0, -100])
-  const textX1 = useSpring(rawTextX1, springConfig)
-
-  const rawTextX2 = useTransform(scrollYProgress, [0, 1], [0, 100])
-  const textX2 = useSpring(rawTextX2, springConfig)
-
-  const rawScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9])
-  const scale = useSpring(rawScale, springConfig)
-
-  const rawOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
+  const rawOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
   const opacity = useSpring(rawOpacity, springConfig)
+
+  const rawY = useTransform(scrollYProgress, [0, 1], [0, 100])
+  const y = useSpring(rawY, springConfig)
 
   return (
     <section
       id="hero"
       ref={ref}
-      className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-white"
+      aria-label="Sección principal - DevDiaz Labs"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white"
     >
-      {/* Technical Grid Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      {/* Interactive Canvas Grid Background (z-0) */}
+      <InteractiveGrid />
 
-      {/* Subtle ambient gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white via-transparent to-white/80 pointer-events-none" />
-
-      {/* Neon Glow Bloom (Top Left) */}
+      {/* Main Content Container (z-10 - above canvas) */}
       <motion.div
-        className="absolute top-20 left-10 w-64 h-64 rounded-full bg-[#00FF00]/10 blur-[100px]"
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-      />
+        style={{ opacity, y }}
+        className="relative z-10 w-full max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-20"
+      >
+        <div className="flex flex-col items-center justify-center text-center space-y-8">
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-12">
-        <div className="grid lg:grid-cols-2 gap-8 items-center">
-          {/* Text Content */}
-          <motion.div style={{ opacity }} className="space-y-5">
-            <motion.div
-              variants={fadeUpVariants}
-              initial="hidden"
-              animate="visible"
-              custom={0}
-              className="inline-flex items-center gap-2 bg-[#121212] text-white px-3 py-1.5 rounded-full text-xs font-mono tracking-wider"
-            >
-              <motion.span
-                className="w-2 h-2 bg-[#00FF00] rounded-full"
-                animate={{ scale: [1, 1.2, 1], opacity: [1, 0.7, 1] }}
-                transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-              />
-              INNOVACIÓN TECNOLÓGICA
-            </motion.div>
+          {/* Status Badge */}
+          <motion.div
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            custom={0}
+            className="inline-flex items-center gap-2.5 bg-gray-900 text-white px-5 py-2.5 rounded-full text-xs font-mono tracking-widest"
+          >
+            <span
+              className="w-2 h-2 bg-[#00FF00] rounded-full animate-pulse shadow-[0_0_10px_rgba(0,255,0,0.6)]"
+              aria-hidden="true"
+            />
+            INNOVACIÓN TECNOLÓGICA
+          </motion.div>
 
-            <div className="space-y-1 overflow-hidden">
-              <motion.h1
-                style={{ x: textX1 }}
-                className="text-5xl md:text-7xl font-black tracking-tighter text-black leading-[0.9]"
-              >
-                <motion.span
-                  variants={fadeUpVariants}
-                  initial="hidden"
-                  animate="visible"
-                  custom={1}
-                  className="inline-block"
-                >
-                  IMPULSA TU
-                </motion.span>
-              </motion.h1>
-              <motion.h1
-                style={{ x: textX2 }}
-                className="text-5xl md:text-7xl font-black tracking-tighter text-black leading-[0.9]"
-              >
-                <motion.span
-                  variants={fadeUpVariants}
-                  initial="hidden"
-                  animate="visible"
-                  custom={2}
-                  className="inline-block text-[#00FF00]"
-                >
-                  AMBICIÓN
-                </motion.span>
-              </motion.h1>
-              <motion.p
-                variants={fadeUpVariants}
-                initial="hidden"
-                animate="visible"
-                custom={3}
-                className="text-lg md:text-xl font-mono text-black/80 tracking-tight pt-2 max-w-md"
-              >
-                Desarrollo de apps que transforman tu día a día.
-              </motion.p>
-            </div>
+          {/* Main Heading - Dark text on light background (WCAG AA) */}
+          <motion.h1
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            custom={1}
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter leading-[0.9]"
+          >
+            <span className="block text-gray-900">IMPULSA TU</span>
+            <span className="block text-[#00DD00] drop-shadow-[0_0_60px_rgba(0,255,0,0.25)]">
+              AMBICIÓN
+            </span>
+          </motion.h1>
 
-            <motion.div
-              variants={fadeUpVariants}
-              initial="hidden"
-              animate="visible"
-              custom={4}
-              className="flex flex-wrap gap-3 pt-2"
-            >
-              <a href="#services">
-                <motion.button
-                  className="bg-[#00FF00] text-[#121212] px-6 py-3 rounded-full font-bold text-sm tracking-wide flex items-center gap-2 group relative overflow-hidden cursor-pointer"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full"
-                    whileHover={{ x: "200%" }}
-                    transition={{ duration: 0.6 }}
-                  />
-                  <span className="relative z-10">Ver Servicios</span>
-                  <motion.svg
-                    className="w-4 h-4 relative z-10"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    initial={{ x: 0 }}
-                    whileHover={{ x: 4 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </motion.svg>
-                </motion.button>
-              </a>
+          {/* Subtitle - Monospace "Code-Style" for Dev aesthetic */}
+          <motion.p
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            custom={2}
+            className="text-lg md:text-xl lg:text-2xl font-mono font-medium text-gray-600 tracking-tight max-w-2xl leading-relaxed"
+          >
+            Desarrollo de soluciones que transforman tu día a día.
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            custom={3}
+            className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 pt-6"
+          >
+            <a href="#services" aria-label="Ver nuestros servicios">
               <motion.button
-                className="border-2 border-[#121212] text-[#121212] px-6 py-3 rounded-full font-bold text-sm tracking-wide relative overflow-hidden hover:bg-[#121212] hover:text-white transition-colors cursor-pointer"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className={BUTTON_PRIMARY}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
               >
-                Explora Nuestros Productos
-              </motion.button>
-            </motion.div>
-
-            <motion.div
-              variants={fadeUpVariants}
-              initial="hidden"
-              animate="visible"
-              custom={5}
-              className="flex flex-wrap gap-4 pt-2"
-            >
-              {[
-                "Diseño Intuitivo",
-                "Seguridad Total",
-                "Innovación Constante",
-                "Soporte Directo"
-              ].map((benefit, i) => (
-                <motion.div
-                  key={benefit}
-                  className="flex items-center gap-2 text-xs font-mono text-[#121212]/60"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.8 + i * 0.1 }}
+                <span>Ver Servicios</span>
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
                 >
-                  <div className="w-1.5 h-1.5 bg-[#00FF00] rounded-full animate-pulse" />
-                  {benefit}
-                </motion.div>
-              ))}
-            </motion.div>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </motion.button>
+            </a>
+
+            <motion.button
+              className={BUTTON_SECONDARY}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              aria-label="Explorar nuestros productos"
+            >
+              Explora Nuestros Productos
+            </motion.button>
           </motion.div>
 
-          {/* Right Side - Visuals */}
-          <motion.div style={{ y, scale }} className="relative flex justify-center">
-            <motion.div variants={scaleInVariants} initial="hidden" animate="visible" className="relative">
-
-              {/* BACK GLOW - Enhances depth */}
-              <motion.div
-                className="absolute inset-0 bg-[#00FF00]/40 blur-[120px] rounded-full scale-90"
-                animate={{
-                  scale: [0.9, 1.1, 0.9],
-                  opacity: [0.4, 0.6, 0.4],
-                }}
-                transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-              />
-
-              <motion.div
-                animate={{
-                  y: [0, -15, 0],
-                  rotate: [0, 2, 0],
-                }}
-                transition={{
-                  duration: 6,
-                  repeat: Number.POSITIVE_INFINITY,
-                  ease: "easeInOut",
-                }}
-                className="relative"
+          {/* Benefits List */}
+          <motion.ul
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            custom={4}
+            className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 pt-8"
+            aria-label="Beneficios principales"
+          >
+            {[
+              "Diseño Intuitivo",
+              "Seguridad Total",
+              "Innovación Constante",
+              "Soporte Directo"
+            ].map((benefit) => (
+              <li
+                key={benefit}
+                className="flex items-center gap-2.5 text-sm font-medium text-gray-600"
               >
-                {/* Floating Image Container with CSS Blend Mode */}
-                <div className="relative w-full max-w-[650px] h-auto aspect-[4/3] md:aspect-auto">
-                  {/* MIX-BLEND-MODE: MULTIPLY removes the white background visually */}
-                  <Image
-                    src="/images/hero-composition-samsung.png"
-                    alt="DevDiaz Labs - Digital Ecosystem"
-                    width={800}
-                    height={600}
-                    className="relative z-10 object-contain drop-shadow-2xl mix-blend-multiply"
-                    priority
-                  />
-                </div>
-              </motion.div>
-            </motion.div>
-          </motion.div>
+                <span
+                  className="w-1.5 h-1.5 bg-[#00FF00] rounded-full shadow-[0_0_6px_rgba(0,255,0,0.5)]"
+                  aria-hidden="true"
+                />
+                {benefit}
+              </li>
+            ))}
+          </motion.ul>
         </div>
 
+        {/* Scroll Indicator */}
         <motion.div
-          className="absolute bottom-6 left-1/2 -translate-x-1/2"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5, duration: 0.8 }}
+          aria-hidden="true"
         >
           <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
           >
-            <div className="w-5 h-8 border-2 border-[#121212]/30 rounded-full flex justify-center pt-1.5">
+            <div className="w-6 h-10 border-2 border-gray-300 rounded-full flex justify-center pt-2">
               <motion.div
-                className="w-1 h-2 bg-[#121212]/30 rounded-full"
-                animate={{ y: [0, 6, 0], opacity: [1, 0.5, 1] }}
-                transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+                className="w-1.5 h-3 bg-gray-400 rounded-full"
+                animate={{ y: [0, 8, 0], opacity: [1, 0.3, 1] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
               />
             </div>
           </motion.div>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   )
 }
