@@ -70,11 +70,9 @@ export const ITEM_VARIANTS = {
 
 /**
  * External Links
- * TODO: Replace placeholder values with real data before production
  */
 export const EXTERNAL_LINKS = {
-    // TODO: Replace with real WhatsApp number
-    WHATSAPP: "https://wa.me/1234567890",
+    WHATSAPP: "https://wa.me/527824127509",
 } as const
 
 /**
@@ -83,7 +81,7 @@ export const EXTERNAL_LINKS = {
 export const FOOTER_LINKS = [
     {
         title: "Productos",
-        links: ["Sensu", "Gritia", "Próximamente"],
+        links: ["Sensu", "Próximamente"],
     },
     {
         title: "Enlaces",

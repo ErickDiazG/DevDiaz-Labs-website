@@ -19,17 +19,18 @@ const products = [
     tags: ["Inteligencia Emocional", "Monitoreo real-time", "Bienestar mental"],
     status: "available",
   },
-  {
-    id: 2,
-    name: "Gritia",
-    tagline: "La evolución del Gym",
-    description: "Transforma tu entrenamiento con rutinas inteligentes y análisis de progreso en tiempo real.",
-    image: "/images/gritia-app.jpg",
-    bgColor: "from-[#FFD700]/20 via-[#FFD700]/10 to-transparent",
-    accentColor: "#FFD700",
-    tags: ["Rutinas Inteligentes", "Análisis de Progreso"],
-    status: "coming-soon",
-  },
+  // TODO: Descomentar cuando Gritia esté lista para producción
+  // {
+  //   id: 2,
+  //   name: "Gritia",
+  //   tagline: "La evolución del Gym",
+  //   description: "Transforma tu entrenamiento con rutinas inteligentes y análisis de progreso en tiempo real.",
+  //   image: "/images/gritia-app.jpg",
+  //   bgColor: "from-[#FFD700]/20 via-[#FFD700]/10 to-transparent",
+  //   accentColor: "#FFD700",
+  //   tags: ["Rutinas Inteligentes", "Análisis de Progreso"],
+  //   status: "coming-soon",
+  // },
 ]
 
 const slideVariants = {
@@ -148,15 +149,18 @@ export function FlavorCarousel() {
         {/* Carousel */}
         <div className="relative">
           <div className="flex items-center justify-center gap-6">
-            <motion.button
-              onClick={prevProduct}
-              className="hidden md:flex w-12 h-12 rounded-full border-2 border-white/20 items-center justify-center text-white hover:bg-white hover:text-black transition-colors cursor-pointer"
-              whileHover={{ scale: 1.1, rotate: -5 }}
-              whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </motion.button>
+            {/* Botón izquierdo - Solo visible si hay más de 1 producto */}
+            {products.length > 1 && (
+              <motion.button
+                onClick={prevProduct}
+                className="hidden md:flex w-12 h-12 rounded-full border-2 border-white/20 items-center justify-center text-white hover:bg-white hover:text-black transition-colors cursor-pointer"
+                whileHover={{ scale: 1.1, rotate: -5 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </motion.button>
+            )}
 
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
@@ -289,55 +293,64 @@ export function FlavorCarousel() {
               </motion.div>
             </AnimatePresence>
 
-            <motion.button
-              onClick={nextProduct}
-              className="hidden md:flex w-12 h-12 rounded-full border-2 border-white/20 items-center justify-center text-white hover:bg-white hover:text-black transition-colors cursor-pointer"
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            >
-              <ChevronRight className="w-5 h-5" />
-            </motion.button>
-          </div>
-
-          <div className="flex md:hidden justify-center gap-4 mt-6">
-            <motion.button
-              onClick={prevProduct}
-              className="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-white cursor-pointer"
-              whileTap={{ scale: 0.9 }}
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </motion.button>
-            <motion.button
-              onClick={nextProduct}
-              className="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-white cursor-pointer"
-              whileTap={{ scale: 0.9 }}
-            >
-              <ChevronRight className="w-4 h-4" />
-            </motion.button>
-          </div>
-
-          <div className="flex justify-center gap-2 mt-6">
-            {products.map((product, index) => (
+            {/* Botón derecho - Solo visible si hay más de 1 producto */}
+            {products.length > 1 && (
               <motion.button
-                key={product.id}
-                onClick={() => {
-                  const newDirection = index > currentIndex ? 1 : -1
-                  setCurrentIndex(index)
-                  setDirection(newDirection)
-                }}
-                className="h-2 rounded-full transition-all cursor-pointer"
-                style={{
-                  backgroundColor: index === currentIndex ? product.accentColor : "rgba(255,255,255,0.2)",
-                }}
-                animate={{
-                  width: index === currentIndex ? 28 : 10,
-                }}
-                whileHover={{ scale: 1.2 }}
-                transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              />
-            ))}
+                onClick={nextProduct}
+                className="hidden md:flex w-12 h-12 rounded-full border-2 border-white/20 items-center justify-center text-white hover:bg-white hover:text-black transition-colors cursor-pointer"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              >
+                <ChevronRight className="w-5 h-5" />
+              </motion.button>
+            )}
           </div>
+
+          {/* Botones móviles - Solo visibles si hay más de 1 producto */}
+          {products.length > 1 && (
+            <div className="flex md:hidden justify-center gap-4 mt-6">
+              <motion.button
+                onClick={prevProduct}
+                className="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-white cursor-pointer"
+                whileTap={{ scale: 0.9 }}
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </motion.button>
+              <motion.button
+                onClick={nextProduct}
+                className="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-white cursor-pointer"
+                whileTap={{ scale: 0.9 }}
+              >
+                <ChevronRight className="w-4 h-4" />
+              </motion.button>
+            </div>
+          )}
+
+          {/* Indicadores de paginación - Solo visibles si hay más de 1 producto */}
+          {products.length > 1 && (
+            <div className="flex justify-center gap-2 mt-6">
+              {products.map((product, index) => (
+                <motion.button
+                  key={product.id}
+                  onClick={() => {
+                    const newDirection = index > currentIndex ? 1 : -1
+                    setCurrentIndex(index)
+                    setDirection(newDirection)
+                  }}
+                  className="h-2 rounded-full transition-all cursor-pointer"
+                  style={{
+                    backgroundColor: index === currentIndex ? product.accentColor : "rgba(255,255,255,0.2)",
+                  }}
+                  animate={{
+                    width: index === currentIndex ? 28 : 10,
+                  }}
+                  whileHover={{ scale: 1.2 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>
