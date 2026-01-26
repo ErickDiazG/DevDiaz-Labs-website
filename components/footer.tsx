@@ -1,42 +1,15 @@
 "use client"
 
-import { motion, useInView } from "framer-motion"
-import { useState, useRef } from "react"
+import { motion } from "framer-motion"
+import { useState } from "react"
 import Link from "next/link"
-import { FOOTER_LINKS, EXTERNAL_LINKS } from "@/lib/constants"
-
-// Animation variants for staggered reveal
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.15,
-    },
-  },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 15 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring" as const,
-      stiffness: 100,
-      damping: 20,
-    },
-  },
-}
+import { EXTERNAL_LINKS } from "@/lib/constants"
 
 export function Footer() {
   const [isHovering, setIsHovering] = useState(false)
-  const footerRef = useRef(null)
-  const isInView = useInView(footerRef, { once: true, margin: "-100px" })
 
   return (
-    <footer id="contact" ref={footerRef} className="relative bg-[#121212] pt-24 pb-6 overflow-hidden">
+    <footer id="contact" className="relative bg-[#121212] pt-24 pb-6 overflow-hidden">
       {/* Background Gradient */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-4xl bg-[#00FF00]/10 blur-[100px] rounded-full pointer-events-none" />
 
@@ -115,36 +88,11 @@ export function Footer() {
           transition={{ delay: 0.3 }}
         >
           <p className="text-white/60 font-mono text-xs max-w-xl mx-auto leading-relaxed">
-            DevDiaz Labs es un estudio de desarrollo de software especializado en crear aplicaciones que transforman la vida de las personas. IA, mobile y más.
+            DevDiaz Labs es un estudio de desarrollo de software especializado en crear aplicaciones que transforman la vida de las personas.
           </p>
         </motion.div>
 
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 py-8 border-t border-white/10"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
-          {FOOTER_LINKS.map((section) => (
-            <motion.div key={section.title} variants={itemVariants}>
-              <h4 className="font-bold text-white text-sm mb-3">{section.title}</h4>
-              <ul className="space-y-2">
-                {section.links.map((item) => (
-                  <li key={item}>
-                    <motion.div whileHover={{ x: 4 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
-                      <Link
-                        href="#"
-                        className="text-white/60 hover:text-[#00FF00] font-mono text-xs transition-colors inline-block"
-                      >
-                        {item}
-                      </Link>
-                    </motion.div>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
-        </motion.div>
+        {/* Minimalist Footer Bar */}
 
         <motion.div
           className="flex flex-col md:flex-row justify-between items-center pt-6 border-t border-white/10 gap-3"

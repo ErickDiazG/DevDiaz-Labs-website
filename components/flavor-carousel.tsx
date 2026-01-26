@@ -16,7 +16,7 @@ const products = [
     image: "/images/sensu-mockup.png",
     bgColor: "from-[#00FF00]/20 via-[#00FF00]/10 to-transparent",
     accentColor: "#00FF00",
-    tags: ["Inteligencia Emocional", "Monitoreo real-time", "Bienestar mental"],
+    tags: ["Inteligencia Emocional", "Análisis de Patrones", "Bienestar mental"],
     status: "available",
   },
   // TODO: Descomentar cuando Gritia esté lista para producción
@@ -254,7 +254,8 @@ export function FlavorCarousel() {
                         ))}
                       </motion.div>
 
-                      {currentProduct.status === "available" ? (
+                      {/* TODO: Descomentar cuando el enlace de Play Store esté activo */}
+                      {/* {currentProduct.status === "available" ? (
                         <motion.button
                           className="px-6 py-3 rounded-full font-bold text-sm tracking-wide w-full md:w-auto relative overflow-hidden cursor-pointer"
                           whileHover={{ scale: 1.02 }}
@@ -272,21 +273,7 @@ export function FlavorCarousel() {
                           />
                           <span className="relative z-10">Descargar App</span>
                         </motion.button>
-                      ) : (
-                        <motion.div
-                          className="flex items-center gap-3"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 0.5 }}
-                        >
-                          <motion.div
-                            className="w-2 h-2 bg-[#FFD700] rounded-full"
-                            animate={{ scale: [1, 1.3, 1], opacity: [1, 0.5, 1] }}
-                            transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
-                          />
-                          <span className="font-mono text-xs text-[#121212]/60">Lanzamiento próximo...</span>
-                        </motion.div>
-                      )}
+                      ) : null} */}
                     </div>
                   </div>
                 </motion.div>
