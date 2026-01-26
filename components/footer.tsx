@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion"
 import { useState, useRef } from "react"
 import Link from "next/link"
+import { FOOTER_LINKS, EXTERNAL_LINKS } from "@/lib/constants"
 
 // Animation variants for staggered reveal
 const containerVariants = {
@@ -28,29 +29,6 @@ const itemVariants = {
     },
   },
 }
-
-// Footer navigation links - moved outside component to avoid recreation
-const FOOTER_LINKS = [
-  {
-    title: "Productos",
-    links: ["Sensu", "Gritia", "Próximamente"],
-  },
-  {
-    title: "Enlaces",
-    links: ["Inicio", "Productos", "Tecnología", "Nosotros"],
-  },
-  {
-    title: "Empresa",
-    links: ["Sobre Nosotros", "Carreras", "Blog"],
-  },
-  {
-    title: "Legal",
-    links: ["Privacidad", "Términos", "Cookies"],
-  },
-] as const
-
-// TODO: Replace with real WhatsApp number before production deployment
-const WHATSAPP_LINK = "https://wa.me/1234567890"
 
 export function Footer() {
   const [isHovering, setIsHovering] = useState(false)
@@ -109,7 +87,7 @@ export function Footer() {
             transition={{ delay: 0.3 }}
           >
             <Link
-              href={WHATSAPP_LINK}
+              href={EXTERNAL_LINKS.WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Cotizar proyecto por WhatsApp"
