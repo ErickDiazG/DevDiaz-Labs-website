@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
 import { Smartphone, Monitor, Ticket } from "lucide-react"
+import Link from "next/link"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -70,24 +71,33 @@ export function ActivationsSection() {
           {[
             {
               icon: Smartphone,
-              title: "Apps Android",
+              title: "Desarrollo de Apps",
               description: "Desarrollo nativo y publicación en Play Store.",
+              href: "https://play.google.com/store/apps/dev?id=6817556477717740348",
+              buttonText: "Ver en Play Store",
+              external: true,
             },
             {
               icon: Monitor,
               title: "Web & Landing Pages",
               description: "Sitios modernos de alta conversión.",
+              href: "#contact",
+              buttonText: "Cotizar Proyecto",
+              external: false,
             },
             {
               icon: Ticket,
-              title: "Invitaciones Digitales",
+              title: "Experiencias para Eventos",
               description: "Invitaciones interactivas con mapas y RSVP.",
+              href: "#contact",
+              buttonText: "Cotizar Proyecto",
+              external: false,
             },
           ].map((service) => (
             <motion.div
               key={service.title}
               variants={itemVariants}
-              className="group relative bg-zinc-900/40 backdrop-blur-sm border border-white/5 rounded-3xl p-8 min-h-[320px] flex flex-col transition-all duration-300 hover:-translate-y-2 hover:border-[#00FF00]/50 hover:shadow-[0_0_30px_rgba(0,255,0,0.15)] cursor-pointer"
+              className="group relative bg-zinc-900/40 backdrop-blur-sm border border-white/5 rounded-3xl p-8 min-h-[320px] flex flex-col transition-all duration-300 hover:-translate-y-2 hover:border-[#00FF00]/50 hover:shadow-[0_0_30px_rgba(0,255,0,0.15)]"
             >
               {/* Neon Glow element on hover */}
               <div className="absolute inset-0 rounded-3xl bg-[#00FF00]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -109,13 +119,17 @@ export function ActivationsSection() {
                   {service.description}
                 </p>
 
-                {/* Arrow on hover at bottom */}
-                <div className="mt-6 pt-6 border-t border-white/10 flex items-center text-[#00FF00] font-bold text-sm tracking-wide opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
-                  Saber más
+                {/* Action Button */}
+                <Link
+                  href={service.href}
+                  {...(service.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className="mt-6 pt-6 border-t border-white/10 flex items-center text-[#00FF00] font-bold text-sm tracking-wide opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 cursor-pointer"
+                >
+                  {service.buttonText}
                   <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
-                </div>
+                </Link>
               </div>
             </motion.div>
           ))}
