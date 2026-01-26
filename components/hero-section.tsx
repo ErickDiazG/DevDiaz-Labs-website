@@ -156,9 +156,9 @@ export function HeroSection() {
           >
             {[
               "Diseño Intuitivo",
-              "Seguridad Total",
+              "Resultados ágiles",
               "Innovación Constante",
-              "Soporte Directo"
+              "Digitalizamos tu visión"
             ].map((benefit) => (
               <li
                 key={benefit}

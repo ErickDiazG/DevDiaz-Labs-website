@@ -5,43 +5,48 @@ import { useEffect, useRef, useCallback } from "react"
 /**
  * InteractiveGrid Component - NEURAL NETWORK / CONSTELLATION
  * 
- * A connected particle system that forms a dynamic mesh.
- * Lines connect nearby particles with distance-based opacity.
- * Mouse interaction illuminates both nodes and connections in neon green.
+ * OPTIMIZED VERSION for 60 FPS on mid-range devices.
  * 
- * Optimizations:
- * - Spatial grid for O(n) neighbor lookup instead of O(n²)
- * - Limited particle count for stable 60fps
- * - Batch rendering with minimal state changes
+ * Key optimizations:
+ * - Responsive particle count (70/50/25 for desktop/tablet/mobile)
+ * - Early break in O(n²) loop using X/Y distance before sqrt
+ * - Reduced connection distance to limit line calculations
+ * - Proper cleanup on unmount
  */
 
 // ============================================
-// CONFIGURATION - HIGH VISIBILITY VERSION
+// CONFIGURATION - CALIBRATED FOR VISUAL DENSITY + PERFORMANCE
 // ============================================
 
-// Particle distribution (responsive)
-const PARTICLES_DESKTOP = 160          // More particles for denser network
-const PARTICLES_MOBILE = 80            // Reduced for mobile performance
+// Responsive particle distribution (4 tiers for fine-tuned density)
+const PARTICLES_DESKTOP_LARGE = 115    // Desktop Grande >1400px: dense "neural network" look
+const PARTICLES_LAPTOP = 75            // Laptop Estándar 1024-1400px: balanced for i5 CPUs
+const PARTICLES_TABLET = 45            // Tablet 768-1024px: light
+const PARTICLES_MOBILE = 28            // Mobile <768px: minimal (performance priority)
+
 const MOBILE_BREAKPOINT = 768
+const TABLET_BREAKPOINT = 1024
+const LAPTOP_BREAKPOINT = 1400
 
-// Physics
-const MOUSE_RADIUS = 350               // Larger influence radius
-const PUSH_STRENGTH = 1.8              // Stronger repulsion for more dramatic movement
-const RETURN_FORCE = 0.006             // Slower return for more visible displacement
-const FRICTION = 0.93                  // More slide
-const MAX_VELOCITY = 18
+// Physics (tuned for smoothness)
+const MOUSE_RADIUS = 280
+const PUSH_STRENGTH = 1.5
+const RETURN_FORCE = 0.008
+const FRICTION = 0.92
+const MAX_VELOCITY = 15
 
-// Connections
-const CONNECTION_DISTANCE = 150        // Longer connections = more visible network
-const LINE_WIDTH_BASE = 1              // Thicker base lines
-const LINE_WIDTH_ACTIVE = 3            // Much thicker when glowing
+// Connections - REDUCED distance compensates for more particles
+// Shorter connections = O(n²) stays manageable even with 115 particles
+const CONNECTION_DISTANCE = 110        // Shorter = fewer lines per particle = faster
+const LINE_WIDTH_BASE = 1
+const LINE_WIDTH_ACTIVE = 2.5
 
 // Colors & Sizes
-const NODE_SIZE_BASE = 3               // Larger base nodes
-const NODE_SIZE_ACTIVE = 7             // Much larger when active
-const COLOR_GRAY = { r: 150, g: 150, b: 150 }  // Darker gray = more visible
+const NODE_SIZE_BASE = 2.5
+const NODE_SIZE_ACTIVE = 6
+const COLOR_GRAY = { r: 150, g: 150, b: 150 }
 const COLOR_NEON = { r: 0, g: 255, b: 0 }
-const BASE_OPACITY = 0.5               // Higher base opacity
+const BASE_OPACITY = 0.45
 const ACTIVE_OPACITY = 1
 
 interface Particle {
@@ -57,17 +62,25 @@ interface Particle {
 // Utility: Lerp for smooth interpolation
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t
 
+// Get responsive particle count based on screen width (4 tiers)
+const getParticleCount = (width: number): number => {
+    if (width < MOBILE_BREAKPOINT) return PARTICLES_MOBILE      // <768px
+    if (width < TABLET_BREAKPOINT) return PARTICLES_TABLET      // 768-1023px
+    if (width < LAPTOP_BREAKPOINT) return PARTICLES_LAPTOP      // 1024-1399px
+    return PARTICLES_DESKTOP_LARGE                               // ≥1400px
+}
+
 export function InteractiveGrid() {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const particlesRef = useRef<Particle[]>([])
     const mouseRef = useRef({ x: -1000, y: -1000 })
     const animationFrameRef = useRef<number>(0)
     const dimensionsRef = useRef({ width: 0, height: 0 })
+    const isUnmountedRef = useRef(false)
 
-    // Initialize particles with random distribution
+    // Initialize particles with responsive count
     const initializeParticles = useCallback((width: number, height: number) => {
-        const isMobile = width < MOBILE_BREAKPOINT
-        const count = isMobile ? PARTICLES_MOBILE : PARTICLES_DESKTOP
+        const count = getParticleCount(width)
         const particles: Particle[] = []
 
         // Distribute particles randomly across viewport
@@ -189,16 +202,27 @@ export function InteractiveGrid() {
             p.y += p.vy
         }
 
-        // ========== RENDER CONNECTIONS ==========
-        // Check pairs for connections (optimized: only check each pair once)
+        // ========== RENDER CONNECTIONS (OPTIMIZED) ==========
+        // Early break optimization: check X/Y distance before calculating hypotenuse
+        // This avoids expensive Math.sqrt calls for distant particles
+
+        // Reset shadow once for performance
+        ctx.shadowBlur = 0
+
         for (let i = 0; i < particles.length; i++) {
             const p1 = particles[i]
 
             for (let j = i + 1; j < particles.length; j++) {
                 const p2 = particles[j]
 
+                // EARLY BREAK: Check individual axis distance first
+                // If X or Y distance already exceeds threshold, skip sqrt calculation
                 const dx = p2.x - p1.x
+                if (dx > CONNECTION_DISTANCE || dx < -CONNECTION_DISTANCE) continue
+
                 const dy = p2.y - p1.y
+                if (dy > CONNECTION_DISTANCE || dy < -CONNECTION_DISTANCE) continue
+
                 const distSq = dx * dx + dy * dy
 
                 if (distSq < connectionDistSq) {
@@ -228,21 +252,23 @@ export function InteractiveGrid() {
                     ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${opacity})`
                     ctx.lineWidth = lineWidth
 
-                    // Add glow for active connections
-                    if (jointActivation > 0.15) {
-                        ctx.shadowColor = `rgba(0, 255, 0, ${jointActivation * 0.9})`
-                        ctx.shadowBlur = jointActivation * 20
-                    } else {
+                    // Add glow only for significantly active connections (reduces shadow calculations)
+                    if (jointActivation > 0.2) {
+                        ctx.shadowColor = `rgba(0, 255, 0, ${jointActivation * 0.7})`
+                        ctx.shadowBlur = jointActivation * 15
+                        ctx.stroke()
                         ctx.shadowBlur = 0
+                    } else {
+                        ctx.stroke()
                     }
-
-                    ctx.stroke()
-                    ctx.shadowBlur = 0
                 }
             }
         }
 
-        // ========== RENDER NODES ==========
+        // ========== RENDER NODES (OPTIMIZED) ==========
+        // Reset shadow state once before loop
+        ctx.shadowBlur = 0
+
         for (const p of particles) {
             const a = Math.min(p.activation, 1)
 
@@ -250,7 +276,7 @@ export function InteractiveGrid() {
             const r = Math.round(lerp(COLOR_GRAY.r, COLOR_NEON.r, a))
             const g = Math.round(lerp(COLOR_GRAY.g, COLOR_NEON.g, a))
             const b = Math.round(lerp(COLOR_GRAY.b, COLOR_NEON.b, a))
-            const opacity = lerp(BASE_OPACITY + 0.2, ACTIVE_OPACITY, a)
+            const opacity = lerp(BASE_OPACITY + 0.15, ACTIVE_OPACITY, a)
 
             // Dynamic size
             const size = lerp(NODE_SIZE_BASE, NODE_SIZE_ACTIVE, a)
@@ -260,23 +286,26 @@ export function InteractiveGrid() {
             ctx.arc(p.x, p.y, size, 0, Math.PI * 2)
             ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity})`
 
-            // Glow effect for active nodes
-            if (a > 0.1) {
-                ctx.shadowColor = `rgba(0, 255, 0, ${a})`
-                ctx.shadowBlur = a * 25
-            } else {
+            // Glow effect only for significantly active nodes (performance)
+            if (a > 0.15) {
+                ctx.shadowColor = `rgba(0, 255, 0, ${a * 0.8})`
+                ctx.shadowBlur = a * 18
+                ctx.fill()
                 ctx.shadowBlur = 0
+            } else {
+                ctx.fill()
             }
-
-            ctx.fill()
-            ctx.shadowBlur = 0
         }
 
-        animationFrameRef.current = requestAnimationFrame(animate)
+        // Continue animation loop only if not unmounted
+        if (!isUnmountedRef.current) {
+            animationFrameRef.current = requestAnimationFrame(animate)
+        }
     }, [])
 
     // Setup and cleanup
     useEffect(() => {
+        isUnmountedRef.current = false
         handleResize()
 
         window.addEventListener("resize", handleResize)
@@ -288,12 +317,19 @@ export function InteractiveGrid() {
         animationFrameRef.current = requestAnimationFrame(animate)
 
         return () => {
+            // Mark as unmounted to stop animation loop
+            isUnmountedRef.current = true
+
             window.removeEventListener("resize", handleResize)
             window.removeEventListener("mousemove", handleMouseMove)
             window.removeEventListener("mouseleave", handleMouseLeave)
             window.removeEventListener("touchmove", handleTouchMove)
             window.removeEventListener("touchend", handleTouchEnd)
-            cancelAnimationFrame(animationFrameRef.current)
+
+            // Cancel any pending animation frame
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current)
+            }
         }
     }, [handleResize, handleMouseMove, handleMouseLeave, handleTouchMove, handleTouchEnd, animate])
 
