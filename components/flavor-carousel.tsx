@@ -96,7 +96,7 @@ export function FlavorCarousel() {
   const prevProduct = () => paginate(-1)
 
   return (
-    <section id="products" className="relative py-16 bg-[#121212] overflow-hidden">
+    <section id="products" className="relative pt-24 pb-16 bg-[#121212] overflow-hidden scroll-mt-20">
       <motion.div
         className={`absolute inset-0 bg-gradient-to-br ${currentProduct.bgColor}`}
         initial={{ opacity: 0 }}
