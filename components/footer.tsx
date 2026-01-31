@@ -1,12 +1,12 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useState } from "react"
+
 import Link from "next/link"
 import { EXTERNAL_LINKS } from "@/lib/constants"
 
 export function Footer() {
-  const [isHovering, setIsHovering] = useState(false)
+
 
   return (
     <footer id="contact" className="relative bg-[#121212] pt-24 pb-6 overflow-hidden">
@@ -114,27 +114,7 @@ export function Footer() {
 
           <p className="text-white/40 font-mono text-xs">© 2026 DevDiaz Labs</p>
 
-          <motion.p
-            className="text-white/30 font-mono text-xs cursor-pointer"
-            onHoverStart={() => setIsHovering(true)}
-            onHoverEnd={() => setIsHovering(false)}
-            animate={
-              isHovering
-                ? {
-                  rotate: [0, -5, 5, -5, 5, 0],
-                  scale: [1, 1.1, 1],
-                  color: "#00FF00",
-                }
-                : {
-                  rotate: 0,
-                  scale: 1,
-                  color: "rgba(255,255,255,0.3)",
-                }
-            }
-            transition={{ duration: 0.5 }}
-          >
-            hecho con código
-          </motion.p>
+
         </motion.div>
       </div>
 
