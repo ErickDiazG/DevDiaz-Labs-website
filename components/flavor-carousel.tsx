@@ -13,7 +13,7 @@ const products = [
     name: "Sensu",
     tagline: "Tu diario emocional inteligente",
     description: "Registra tus emociones, visualiza tus patrones y toma el control de tu día a día con estadísticas claras.",
-    image: "/images/sensu-mockup.png",
+    image: "/images/sensu-mockup.webp",
     bgColor: "from-[#00FF00]/20 via-[#00FF00]/10 to-transparent",
     accentColor: "#00FF00",
     tags: ["Inteligencia Emocional", "Análisis de Patrones", "Bienestar mental"],
